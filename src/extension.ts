@@ -28,6 +28,11 @@ export function activate (context: vsc.ExtensionContext): void {
 
     registerCompletionProvider(context)
   }))
+  vsc.commands.registerCommand('_complete.applySnippet', async (range, snippet) => {
+    const edit = new vsc.WorkspaceEdit()
+    edit.set(vsc.window.activeTextEditor.document.uri, [vsc.SnippetTextEdit.replace(range, new vsc.SnippetString(snippet))])
+    await vsc.workspace.applyEdit(edit)
+  })
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function

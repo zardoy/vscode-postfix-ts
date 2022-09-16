@@ -52,10 +52,12 @@ export class CompletionItemBuilder {
     if (useSnippets) {
       const escapedCode = this.code.replace(/\$/g, '\\$')
 
-      this.item.insertText = new vsc.SnippetString(this.replaceExpression(replacement, escapedCode));
-      this.item.additionalTextEdits = [
-        vsc.TextEdit.delete(rangeToDelete)
-      ]
+      this.item.insertText = ''
+      this.item.command = {
+        command: '_complete.applySnippet',
+        arguments: [rangeToDelete, this.replaceExpression(replacement, escapedCode)],
+        title: ''
+      }
     } else {
       this.item.insertText = ''
       this.item.additionalTextEdits = [
